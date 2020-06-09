@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kilric.mapper.EssayMapper">
+    <insert id="addEssay" useGeneratedKeys="true" parameterType="EssayPO">
+        insert into bbs.essay(username, title, post_time, tags, content, smr, forum)
+        VALUES(#{username},#{title},#{postTime},#{tags},#{content},#{smr},#{forum} )
+    </insert>
+
+    <delete id="deleteEssayById" parameterType="int">
+        delete from bbs.essay where essay_id=#{essayId}
+    </delete>
+
+    <resultMap id="essayPOMap" type="com.kilric.po.EssayPO">
+        <id property="essay_id" column="essayId"/>
+        <result property="username" column="username"/>
+        <result property="title" column="title"/>
+        <result property="post_time" column="postTime"/>
+        <result property="tags" column="tags"/>
+        <result property="content" column="content"/>
+        <result property="smr" column="smr"/>
+        <result property="forum" column="forum"/>
+    </resultMap>
+    <select id="findEssaysByForum" resultMap="essayPOMap" parameterType="string">
+        select *
+        from bbs.essay
+        where forum=#{forumName}
+        order by essay_id
+        desc
+    </select>
+
+    <select id="findEssayByEssayId" parameterType="int" resultMap="essayPOMap">
+        select *
+        from bbs.essay
+        where essay_id = #{essayId}
+    </select>
+
+    <select id="findEssayByQuery" parameterType="string" resultMap="essayPOMap">
+        select *
+        from bbs.essay
+        where title like concat(concat('%',#{query}),'%')
+        or
+        content like concat(concat('%',#{query}),'%')
+        order by essay_id desc
+    </select>
+</mapper>

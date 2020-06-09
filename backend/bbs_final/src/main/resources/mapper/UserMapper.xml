@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kilric.mapper.UserMapper">
+    <insert id="addUser" parameterType="UserPO" useGeneratedKeys="true">
+        insert into
+            bbs.user(username, email, password, role, forum)
+            VALUES(#{username},#{email},#{password},#{role},#{forum});
+    </insert>
+
+    <delete id="deleteUserByUsername" parameterType="string">
+        delete from bbs.user where username = #{username}
+    </delete>
+<resultMap id="userPOMap" type="UserPO" autoMapping="true">
+    <id column="user_id" property="userId"/>
+    <result column="username" property="username"/>
+    <result column="email" property="email"/>
+    <result column="password" property="password"/>
+    <result column="forum" property="forum"/>
+    <result column="role" property="role" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+</resultMap>
+    <select id="findUsers" resultMap="userPOMap">
+        select * from bbs.user
+    </select>
+
+
+    <update id="updateUser" parameterType="UserPO" >
+        update bbs.user
+        <set>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="role!=null">
+                role=#{role},
+            </if>
+            <if test="forum!=null">
+                forum=#{forum}
+            </if>
+        </set>
+        where username=#{username}
+    </update>
+
+    <select id="findUserByUsername" parameterType="string" resultMap="userPOMap">
+        select * from bbs.user where username=#{username}
+    </select>
+
+    <select id="getRoleByUsername" resultType="com.kilric.enums.Role" parameterType="string">
+        select role from bbs.user where username=#{username}
+    </select>
+
+    <select id="findUserByUnAndPwd" resultType="UserPO">
+        select * from bbs.user where username=#{username} and password=#{ecdPwd}
+    </select>
+
+</mapper>

@@ -1,0 +1,59 @@
+server:
+  port: 9999
+#logging:
+#  level:
+#    root: debug
+spring:
+# mysql config
+  datasource:
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.36.8.152:3306/bbs?useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+# redis config
+  redis:
+    password: 12345678
+    host: localhost
+    port: 6379
+    client-name: redis1
+    timeout: 1000
+    jedis:
+      pool:
+        min-idle: 5
+        max-active: 10
+        max-idle: 10
+        max-wait: 2000
+  #  redis cache config
+  cache:
+    redis:
+      key-prefix: jia
+      time-to-live: 0ms
+      cache-null-values: true
+      use-key-prefix: true
+    cache-names: redisCache
+    type: redis
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    username: 353553060@qq.com
+    password: ylblmyhutprfbhif
+    port: 25
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    use-column-label: true
+    cache-enabled: true
+    aggressive-lazy-loading: true
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+  type-aliases-package: com.kilric.po
+pagehelper:
+  reasonable: true
+  page-size-zero: true
+  helper-dialect: mysql
+  support-methods-arguments: true
+  row-bounds-with-count: true
+
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kilric.mapper.CommentMapper">
+    <insert id="addComment" parameterType="CommentPO">
+        insert into bbs.comment(essay_id, username, post_time, cmt_content)
+        VALUES (#{essayId},#{username},#{postTime},#{cmtContent})
+    </insert>
+
+    <delete id="deleteCommentById" parameterType="int">
+        delete from bbs.comment where comment_id=#{cmtId}
+    </delete>
+
+    <resultMap id="cmtPOMap" type="com.kilric.po.CommentPO">
+        <id column="comment_id" property="commentId"/>
+        <result column="essay_id" property="essayId"/>
+        <result column="username" property="username"/>
+        <result column="post_time" property="postTime"/>
+        <result column="cmt_content" property="cmtContent"/>
+    </resultMap>
+    <select id="findCommentsByEssayId" parameterType="int" resultMap="cmtPOMap">
+        select *
+        from bbs.comment
+        where essay_id=#{essayId}
+        order by comment_id
+        desc
+    </select>
+
+    <select id="getCommentsCountByEssayId" parameterType="int">
+        select count(*) from bbs.comment where essay_id=#{essayId}
+    </select>
+
+    <select id="getCommentByCommentId" parameterType="int">
+        select * from bbs.comment where comment_id=#{cmtId}
+    </select>
+</mapper>
